@@ -77,12 +77,12 @@ int main()
 			cout<< tiempo_entre_desc << '\t' << aHrMin(hs_descom) << '\t' << tiempo_arreglo << '\t' << aHrMin(final_arreglo) << '\t' << espera << '\t' << i+1<<endl;
 		//cout << tiempo_entre_desc << '\t' << hs_descom/60 << '\t' << tiempo_arreglo << '\t' << final_arreglo/60 << '\t' << espera << '\t' << i+1<<endl;
 	}
-	if (cant_empleados * 8 * 8 > espera_total / 60)
-		cout << "Se tiene un gasto mayor al tener mas operarios, que los gastos generados por tener una maquina sin funcionar";
-	else if (cant_empleados * 8 * 8 < espera_total / 60)
-		cout << "Se tiene un gasto mayor teniendo maquinas sin operar, que teniendo mas operarios";
+	if (cant_empleados * 8 * 8 > (espera_total / 60) * 30)
+		cout << "Se tiene un gasto mayor al tener mas operarios, que los gastos generados por tener una maquina sin funcionar" << endl;
+	else if (cant_empleados * 8 * 8 < (espera_total / 60) * 30)
+		cout << "Se tiene un gasto mayor teniendo maquinas sin operar, que teniendo mas operarios" << endl;
 	else
-		cout << "La proporcion entre gastos de empleados y de maquina sin funcionar es la misma, por lo que se esta en el punto optimo";
+		cout << "La proporcion entre gastos de empleados y de maquina sin funcionar es la misma, por lo que se esta en el punto optimo" << endl;
 	system("Pause");
     return 0;
 }
