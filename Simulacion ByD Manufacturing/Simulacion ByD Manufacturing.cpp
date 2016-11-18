@@ -8,6 +8,7 @@
 #include "Operario.h"
 #include <vector>
 #include <string>
+#include <queue>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ int main()
 	int cant_empleados;
 	float espera_total = 0;
 	vector<Operario> lista;
+	queue<int> cola;
 
 	cout << "Cuantos operarios posee la empresa ";
 	cin >> cant_empleados;
@@ -31,7 +33,7 @@ int main()
 	float hs_descom = 480;	//8am
 	float final_arreglo=0, final_arreglo_viejo=0;
 	float espera=0;
-
+	bool band=false;
 	cout << "TeD\tHdD\tTA\tFA\tEsp\tOp"<<endl;
 	while (hs_descom <= 960)
 	{
@@ -44,11 +46,30 @@ int main()
 			for (int i = 0; i < cant_empleados; i++)
 			{
 				if (lista[i].getfinalizacion() < hs_descom)
+				{	
+					if (!cola.empty())
+						cola.pop();
 					lista[i].setEstado(true);
+					i = lista.size();
+				}
+				else
+				{
+					if (cola.empty())
+						cola.push(hs_descom);
+					else
+						if (lista[i].getfinalizacion() < cola.front())
+						{
+							lista[i].setEstado(true);
+							band = true;
+						}
+				}
 			}
 		}
 
-		final_arreglo = hs_descom + tiempo_arreglo;
+		if(band==false)
+			final_arreglo = hs_descom + tiempo_arreglo;
+		else
+			final_arreglo = cola.front() + tiempo_arreglo;
 
 		bool flag = false;
 		int i = 0;
@@ -56,7 +77,7 @@ int main()
 
 		while (ocupado == false && i < cant_empleados)
 		{
-			if (lista[i].getEstado()==false)
+			if (lista[i].getEstado()==false)	//es falso si esta arreglando una maquina ya
 				i++;
 			else
 			{
@@ -64,7 +85,13 @@ int main()
 				ocupado = true;
 				lista[i].setEstado(false);
 				lista[i].setfinalizacion(final_arreglo);
-				espera = 0;
+				if (cola.empty())
+					espera = 0;
+				else
+				{
+					espera = final_arreglo - cola.front();
+					cola.pop();
+				}
 			}
 		}
 		if (flag == false)
